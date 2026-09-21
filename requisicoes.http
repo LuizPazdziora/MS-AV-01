@@ -1,0 +1,85 @@
+@base = http://localhost:8080
+
+### Listar músicas
+GET {{base}}/musicas
+
+### Buscar música
+GET {{base}}/musicas/1
+
+### Cadastrar música
+POST {{base}}/musicas
+Content-Type: application/json
+
+{"titulo":"Hotel California","artista":"Eagles","album":"Hotel California","duracao":391,"genero":"Rock"}
+
+### Atualizar música (ajuste o ID conforme a resposta do cadastro)
+PUT {{base}}/musicas/6
+Content-Type: application/json
+
+{"titulo":"Hotel California - Live","artista":"Eagles","duracao":400}
+
+### Excluir música
+DELETE {{base}}/musicas/6
+
+### Listar playlists
+GET {{base}}/playlists
+
+### Buscar playlist
+GET {{base}}/playlists/1
+
+### Cadastrar playlist
+POST {{base}}/playlists
+Content-Type: application/json
+
+{"nome":"Trabalho","descricao":"Músicas para concentração"}
+
+### Atualizar playlist (ajuste o ID conforme a resposta do cadastro)
+PUT {{base}}/playlists/6
+Content-Type: application/json
+
+{"nome":"Concentração","descricao":"Minha seleção"}
+
+### Adicionar música diretamente
+POST {{base}}/playlists/6/musicas/1
+
+### Listar IDs das músicas
+GET {{base}}/playlists/6/musicas
+
+### Remover associação
+DELETE {{base}}/playlists/6/musicas/1
+
+### Adicionar via Feign (retorna 409 caso já esteja associada)
+POST {{base}}/api/adicionar/2/musicas/2
+
+### Executar via Feign
+PUT {{base}}/api/executar/2
+
+### Registrar reprodução
+POST {{base}}/reproducao
+Content-Type: application/json
+
+{"playlistid":2}
+
+### Alias usado pelo Feign
+POST {{base}}/statistic
+Content-Type: application/json
+
+{"playlistid":2}
+
+### Listar reproduções
+GET {{base}}/reproducao/2
+
+### Total de reproduções
+GET {{base}}/reproducao/total/2
+
+### Excluir playlist
+DELETE {{base}}/playlists/6
+
+### Validação: espera 400
+POST {{base}}/musicas
+Content-Type: application/json
+
+{"titulo":" ","artista":"Eagles","duracao":0}
+
+### Recurso inexistente: espera 404
+GET {{base}}/playlists/99999
