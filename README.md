@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Atividade MS-AV-01: cadastrar músicas, montar playlists e registrar suas reproduções. Todos os endpoints ficam em uma aplicação, separados por pacotes, seguindo os exemplos de [Microservices da disciplina](https://github.com/esensato/ms-2026-02).
+Atividade MS-AV-01: cadastrar músicas, montar playlists e registrar suas reproduções, seguindo os exemplos de [Microservices da disciplina](https://github.com/esensato/ms-2026-02). A solução representa os quatro componentes do enunciado: músicas, playlists, reproduções e API. Embora conceitualmente representem microserviços distintos, a AV permite reunir todos os endpoints em uma única aplicação Spring Boot, separados por pacotes, para simplificar a execução.
 
 ## Estrutura do projeto
 
@@ -25,6 +25,8 @@ playyourlist/
 - `excecoes`: tratamento simples de recursos inexistentes, duplicidades e validação.
 
 `PlayYourListApplication.java` inicia a aplicação. O arquivo `src/main/resources/data.sql` cria as tabelas e inclui 5 músicas, 5 playlists, 10 associações e 12 reproduções. O H2 fica em memória e é reiniciado junto com a aplicação.
+
+Como os quatro componentes estão na mesma aplicação, os clientes OpenFeign utilizam `http://localhost:8080` para realizar chamadas HTTP entre os endpoints e demonstrar a comunicação entre serviços solicitada pela atividade.
 
 ## Tecnologias utilizadas
 
@@ -52,9 +54,14 @@ O H2 e os dados iniciais são carregados automaticamente. Não é necessário in
 
 Abra `requisicoes.http` e use **Send Request** com a extensão REST Client do VS Code. Os exemplos estão agrupados por domínio. Nos exemplos de cadastro, use o ID retornado nas requisições seguintes.
 
-Para testar o Feign, adicione a música 2 à playlist 2 em `/api/adicionar/2/musicas/2` e execute `/api/executar/2`. O total da playlist 2 passa de 3 para 4. Repetir a mesma associação retorna 409.
+Para testar o OpenFeign:
 
-O teste `PlayYourListApplicationTests` verifica a inicialização do contexto Spring e pode ser executado pelo VS Code. Pelo terminal, também é possível executar mvn test.
+- `POST /api/adicionar/2/musicas/2`: a API consulta a música, consulta a playlist e solicita a associação (`api → musicas → playlists`). Repetir a mesma associação retorna 409.
+- `PUT /api/executar/2`: a API consulta a playlist e registra a reprodução por `POST /statistic`, usando OpenFeign (`api → playlists → reproducoes`).
+
+Em uma execução recém-iniciada, a playlist 2 possui 3 reproduções cadastradas pelo `data.sql`. Ao executar `PUT /api/executar/2` uma vez, o total passa para 4. Se outras requisições de reprodução forem executadas antes, o total será maior.
+
+O teste `PlayYourListApplicationTests` verifica a inicialização do contexto Spring e pode ser executado pelo VS Code. Pelo terminal, também é possível executar `mvn test`.
 
 ## Endpoints
 
@@ -84,4 +91,6 @@ O cadastro de reprodução recebe `{"playlistid":1}`; a data/hora é gerada no s
 
 Título, artista e nome da playlist não podem estar em branco; duração é obrigatória e positiva. Os tamanhos máximos dos campos são validados. Entradas inválidas retornam 400, recursos inexistentes retornam 404 e associações duplicadas retornam 409.
 
-Excluir uma playlist remove suas associações e reproduções, preservando as músicas do catálogo. Excluir uma música remove seus vínculos, preservando as playlists.
+Excluir uma playlist remove suas associações com músicas, preservando as músicas do catálogo. Excluir uma música remove seus vínculos, preservando as playlists.
+
+## Alunos

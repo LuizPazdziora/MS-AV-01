@@ -54,7 +54,7 @@ public class PlaylistController {
     @DeleteMapping("/{playlistid}")
     public ResponseEntity<Void> remover(@PathVariable Integer playlistid) {
         verificarPlaylist(playlistid);
-        // O banco remove os vínculos e as reproduções, preservando as músicas.
+        // O banco remove os vínculos da playlist com as músicas.
         repo.deleteById(playlistid);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
