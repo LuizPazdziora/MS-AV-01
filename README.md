@@ -6,7 +6,17 @@ Atividade MS-AV-01: cadastrar músicas, montar playlists e registrar suas reprod
 
 ## Estrutura do projeto
 
-Os pacotes ficam em `src/main/java/aula/microservicos/playyourlist`:
+Os pacotes ficam em `src/main/java/playyourlist`:
+
+```text
+playyourlist/
+├── PlayYourListApplication.java
+├── api/
+├── excecoes/
+├── musicas/
+├── playlists/
+└── reproducoes/
+```
 
 - `musicas`: entidade, repository e controller de músicas.
 - `playlists`: playlists e associações, com acesso direto aos repositories.
@@ -29,10 +39,10 @@ Os pacotes ficam em `src/main/java/aula/microservicos/playyourlist`:
 
 ## Como executar
 
-Com JDK e extensões Java já instalados:
+Com JDK, Maven e extensões Java já instalados:
 
 1. Abra a pasta `MS-AV-01` no VS Code e aguarde a importação do Maven.
-2. Abra `src/main/java/aula/microservicos/playyourlist/PlayYourListApplication.java`.
+2. Abra `src/main/java/playyourlist/PlayYourListApplication.java`.
 3. Clique em **Run** acima do método `main`.
 4. A API ficará disponível em `http://localhost:8080`.
 
@@ -44,7 +54,7 @@ Abra `requisicoes.http` e use **Send Request** com a extensão REST Client do VS
 
 Para testar o Feign, adicione a música 2 à playlist 2 em `/api/adicionar/2/musicas/2` e execute `/api/executar/2`. O total da playlist 2 passa de 3 para 4. Repetir a mesma associação retorna 409.
 
-O teste `PlayYourListApplicationTests` verifica a inicialização do contexto Spring e pode ser executado pelo VS Code. O Maven Wrapper também está disponível: `./mvnw test` ou, no Windows, `.\mvnw.cmd test`.
+O teste `PlayYourListApplicationTests` verifica a inicialização do contexto Spring e pode ser executado pelo VS Code. Pelo terminal, também é possível executar mvn test.
 
 ## Endpoints
 

@@ -5,5 +5,3 @@
 *.properties text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
-mvnw text eol=lf
-mvnw.cmd text eol=crlf

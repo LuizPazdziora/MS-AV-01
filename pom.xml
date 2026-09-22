@@ -7,7 +7,7 @@
         <version>4.1.1</version>
         <relativePath/>
     </parent>
-    <groupId>aula.microservicos</groupId>
+    <groupId>playyourlist</groupId>
     <artifactId>ms-av-01</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MS-AV-01</name>
