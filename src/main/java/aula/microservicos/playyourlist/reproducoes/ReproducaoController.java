@@ -5,14 +5,15 @@ import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import aula.microservicos.playyourlist.playlists.PlaylistService;
+import aula.microservicos.playyourlist.playlists.PlaylistRepository;
+import aula.microservicos.playyourlist.excecoes.RecursoInexistenteException;
 
 @RestController
 public class ReproducaoController {
     private final ReproducaoRepository repo;
-    private final PlaylistService playlists;
+    private final PlaylistRepository playlists;
 
-    public ReproducaoController(ReproducaoRepository repo, PlaylistService playlists) {
+    public ReproducaoController(ReproducaoRepository repo, PlaylistRepository playlists) {
         this.repo = repo;
         this.playlists = playlists;
     }
@@ -20,7 +21,7 @@ public class ReproducaoController {
     // O enunciado usa os dois caminhos para a mesma operação.
     @PostMapping({"/reproducao", "/statistic"})
     public ResponseEntity<Reproducao> registrar(@Valid @RequestBody ReproducaoPedido pedido) {
-        playlists.buscar(pedido.playlistid);
+        verificarPlaylist(pedido.playlistid);
         Reproducao reproducao = new Reproducao();
         reproducao.playlistid = pedido.playlistid;
         reproducao.datahora = LocalDateTime.now();
@@ -29,13 +30,19 @@ public class ReproducaoController {
 
     @GetMapping("/reproducao/{playlistid}")
     public ResponseEntity<List<Reproducao>> listar(@PathVariable Integer playlistid) {
-        playlists.buscar(playlistid);
+        verificarPlaylist(playlistid);
         return new ResponseEntity<List<Reproducao>>(repo.findByPlaylistidOrderByDatahoraAscIdAsc(playlistid), HttpStatus.OK);
     }
 
     @GetMapping("/reproducao/total/{playlistid}")
     public ResponseEntity<Long> total(@PathVariable Integer playlistid) {
-        playlists.buscar(playlistid);
+        verificarPlaylist(playlistid);
         return new ResponseEntity<Long>(repo.countByPlaylistid(playlistid), HttpStatus.OK);
+    }
+
+    private void verificarPlaylist(Integer playlistid) {
+        if (!playlists.existsById(playlistid)) {
+            throw new RecursoInexistenteException("Playlist não localizada");
+        }
     }
 }

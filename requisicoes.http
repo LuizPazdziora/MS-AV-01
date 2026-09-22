@@ -1,6 +1,6 @@
 @base = http://localhost:8080
 
-### Listar músicas
+### MÚSICAS
 GET {{base}}/musicas
 
 ### Buscar música
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {"titulo":"Hotel California","artista":"Eagles","album":"Hotel California","duracao":391,"genero":"Rock"}
 
-### Atualizar música (ajuste o ID conforme a resposta do cadastro)
+### Atualizar música (use o ID retornado no cadastro)
 PUT {{base}}/musicas/6
 Content-Type: application/json
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 ### Excluir música
 DELETE {{base}}/musicas/6
 
-### Listar playlists
+### PLAYLISTS
 GET {{base}}/playlists
 
 ### Buscar playlist
@@ -33,13 +33,13 @@ Content-Type: application/json
 
 {"nome":"Trabalho","descricao":"Músicas para concentração"}
 
-### Atualizar playlist (ajuste o ID conforme a resposta do cadastro)
+### Atualizar playlist (use o ID retornado no cadastro)
 PUT {{base}}/playlists/6
 Content-Type: application/json
 
 {"nome":"Concentração","descricao":"Minha seleção"}
 
-### Adicionar música diretamente
+### Adicionar música
 POST {{base}}/playlists/6/musicas/1
 
 ### Listar IDs das músicas
@@ -48,13 +48,10 @@ GET {{base}}/playlists/6/musicas
 ### Remover associação
 DELETE {{base}}/playlists/6/musicas/1
 
-### Adicionar via Feign (retorna 409 caso já esteja associada)
-POST {{base}}/api/adicionar/2/musicas/2
+### Excluir playlist
+DELETE {{base}}/playlists/6
 
-### Executar via Feign
-PUT {{base}}/api/executar/2
-
-### Registrar reprodução
+### REPRODUÇÕES
 POST {{base}}/reproducao
 Content-Type: application/json
 
@@ -72,14 +69,8 @@ GET {{base}}/reproducao/2
 ### Total de reproduções
 GET {{base}}/reproducao/total/2
 
-### Excluir playlist
-DELETE {{base}}/playlists/6
+### API
+POST {{base}}/api/adicionar/2/musicas/2
 
-### Validação: espera 400
-POST {{base}}/musicas
-Content-Type: application/json
-
-{"titulo":" ","artista":"Eagles","duracao":0}
-
-### Recurso inexistente: espera 404
-GET {{base}}/playlists/99999
+### Executar via Feign
+PUT {{base}}/api/executar/2
